@@ -1,0 +1,99 @@
+/*
+import java.util.HashMap;
+
+//Modified version of Dictionary Trie from assignment 4
+public class WordSolutionTrie {
+    static class TrieNode
+    {
+        boolean endOfWord = false;   //node is end of word
+        boolean boardLetter = false; //is permanent letter on board
+        HashMap<Character, TrieNode> children = new HashMap<Character,TrieNode>();
+    };
+
+    private HashMap<Character, TrieNode> rootNode = new HashMap<Character, TrieNode>();
+    private Tile rootTile;
+    private PlayerAPI player;
+    private BoardAPI board;
+    private DictionaryAPI dictionary;
+
+    public WordSolutionTrie(Tile tile, PlayerAPI me, BoardAPI currentBoard, DictionaryAPI currentDictionary){
+        rootTile = tile;
+        player = me;
+        board = currentBoard;
+        dictionary = currentDictionary;
+    }
+
+    /*
+    	public DictionaryTrie(){
+		try {
+			loadDictionary();
+		} catch (FileNotFoundException e){
+			System.out.println("Error loading dictionary. File not found.");
+		}
+
+	}
+
+	private static void loadDictionary() throws FileNotFoundException{
+		File inputFile = new File("./src/scrabble/CollinsDictionary.txt");
+		Scanner inFile = new Scanner(inputFile);
+		//flush out first copyright line
+		inFile.nextLine();
+		int counter = 0;
+		while(inFile.hasNextLine()) {
+			String word = inFile.nextLine().trim();
+			insertWord(word);
+			counter++;
+		}
+		inFile.close();
+	}
+
+    public static boolean searchWord(String word) {
+        word = word.toUpperCase();
+        System.out.println(word + "1");
+        if(rootNode.containsKey(word.charAt(0))) {
+            System.out.println("word" + "2");
+            if(word.length() == 1) {
+                return true;
+            }
+            return recursiveSearch(word.substring(1), rootNode.get(word.charAt(0)));
+        }else {
+            System.out.println(word + "3");
+            return false;
+        }
+    }
+
+    private static void insertWord(String word) {
+        if(!rootNode.containsKey(word.charAt(0))){
+            rootNode.put(word.charAt(0), new TrieNode());
+        }
+
+        recursiveInsert(rootNode.get(word.charAt(0)), word.substring(1));
+    }
+*/
+    trieBuilder(TrieNode root, String )
+    private static void recursiveInsert(TrieNode root, String word) {
+        final TrieNode next;
+        if(root.children.containsKey(word.charAt(0))) {
+            next = root.children.get(word.charAt(0));
+        }else {
+            next = new TrieNode();
+            root.children.put(word.charAt(0), next);
+        }
+
+        if(word.length() == 1) {
+            next.endOfWord = true;
+            return;
+        }else{
+            recursiveInsert(next, word.substring(1));
+        }
+    }
+
+    private static void recursiveTrimTree(String lettersInFrame){
+
+    }
+    private String formatFrameString(String oldFrame){
+        return oldFrame.replaceAll("[^A-Z_-]", "");
+    }
+
+}
+/*

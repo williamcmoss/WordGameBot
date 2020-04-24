@@ -2,7 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 
-public class Bot0 implements BotAPI {
+public class Bot1 implements BotAPI {
 
     // The public API of Bot must not change
     // This is ONLY class that you can edit in the program
@@ -32,7 +32,7 @@ public class Bot0 implements BotAPI {
 
     private char[][] boardCopy;
 
-    Bot0(PlayerAPI me, OpponentAPI opponent, BoardAPI board, UserInterfaceAPI ui, DictionaryAPI dictionary) {
+    Bot1(PlayerAPI me, OpponentAPI opponent, BoardAPI board, UserInterfaceAPI ui, DictionaryAPI dictionary) {
         new DictionaryTrie(); //create Dictionary Trie
 
         this.me = me;
@@ -66,7 +66,7 @@ public class Bot0 implements BotAPI {
         String command = "";
         switch (turnCount) {
             case 0:
-                command = "NAME Vanderbot";
+                command = "NAME Vanderbot2";
                 break;
             default:
                 findNewWordUpdateBoard();
@@ -339,145 +339,6 @@ public class Bot0 implements BotAPI {
             return "PASS";
         }else{
             return ""+(char)(column + ((int) 'A'))+(row+1);
-        }
-    }
-}
-//Trie modified from Assignment 4 to be a modified GADDAG
-class DictionaryTrie {
-    private static final String DICTIONARY_PATH = "csw.txt";
-    private static final char REVERSE_CHARACTER = '/';
-    private static final char WILDCARD_CHAR = Tile.BLANK;
-    static class TrieNode
-    {
-        boolean endOfWord = false;
-        HashMap<Character, TrieNode> children = new HashMap<Character,TrieNode>();
-    };
-
-    private static HashMap<Character, TrieNode> rootNode = new HashMap<Character, TrieNode>();
-
-    public DictionaryTrie(){
-        try {
-            loadDictionary();
-        } catch (FileNotFoundException e){
-            System.out.println("Error loading dictionary. File not found.");
-        }
-    }
-
-    public static void loadDictionary() throws FileNotFoundException {
-        File inputFile = new File(DICTIONARY_PATH);
-        Scanner inFile = new Scanner(inputFile);
-        //flush out first copyright line
-        inFile.nextLine();
-        int counter = 0;
-        while(inFile.hasNextLine()) {
-            String word = inFile.nextLine().trim();
-            ArrayList<String> wordVariations = allWordVariations(word);
-            for (String subWord:
-                 wordVariations) {
-                insertWord(subWord);
-            }
-            counter++;
-        }
-        inFile.close();
-        System.out.println(counter+ " words loaded");
-    }
-    //inserts version of word starting from all points, by adding entries with a character
-    //denoting where the suffix of the word ends, and where the prefix begins.
-    //example: hello also creates entry llo/he which denotes "he" is a prefix to "llo"
-    private static ArrayList<String> allWordVariations(String word){
-        ArrayList<String> allWordVariations = new ArrayList<>();
-        allWordVariations.add(word);
-        for(int i = 1; i < word.length(); i++){
-            allWordVariations.add(word.substring(i)+REVERSE_CHARACTER+word.substring(0,i));
-        }
-        return allWordVariations;
-    }
-    public static boolean searchWord(String word) {
-        word = word.toUpperCase();
-        if(word.length()==0)
-            return false;
-        if(rootNode.containsKey(word.charAt(0))) {
-            if(word.length() == 1) {
-                return true;
-            }
-            return recursiveWordSearch(word.substring(1), rootNode.get(word.charAt(0)));
-        }else {
-            return false;
-        }
-    }
-    private static boolean recursiveWordSearch(String word, TrieNode curNode) {
-        if(word.length() == 0) {
-            return curNode.endOfWord;
-        }
-
-        if(curNode.children.containsKey(word.charAt(0))) {
-            return recursiveWordSearch(word.substring(1), curNode.children.get(word.charAt(0)));
-        }else {
-            return false;
-        }
-    }
-    //searches to see if the given string is the beginning of an entry in the Trie
-    public static boolean searchWordFragment(String wordFragment) {
-        boolean result = false;
-        wordFragment.toUpperCase();
-        if(rootNode.containsKey(wordFragment.charAt(0))) {
-            if(wordFragment.length() == 1) {
-                result = true;
-            }else {
-                result = recursiveSearchWordFragment(wordFragment.substring(1), rootNode.get(wordFragment.charAt(0)));
-            }
-        }
-        //System.out.println("Search Word Fragment: "+wordFragment+" "+result);
-        return result;
-    }
-    //search given word fragment is a part of a word
-    private static boolean recursiveSearchWordFragment(String word, TrieNode curNode) {
-        if(word.length() == 0) {
-            return true;
-        }
-
-        if(curNode.children.containsKey(word.charAt(0))) {
-            return recursiveSearchWordFragment(word.substring(1), curNode.children.get(word.charAt(0)));
-        }else {
-            return false;
-        }
-    }
-    //gets possible next characters after fragment
-    public static Set<Character> searchNextChar(String search){
-        return recursiveSearchNextChar(search.substring(1), rootNode.get(search.charAt(0)));
-    }
-    private static Set<Character> recursiveSearchNextChar(String word, TrieNode curNode) {
-        if(word.length() == 0) {
-            return curNode.children.keySet();
-        }
-        if(curNode.children.containsKey(word.charAt(0))) {
-            return recursiveSearchNextChar(word.substring(1), curNode.children.get(word.charAt(0)));
-        }else {
-            return null;
-        }
-    }
-    private static void insertWord(String word) {
-        if(!rootNode.containsKey(word.charAt(0))){
-            rootNode.put(word.charAt(0), new TrieNode());
-        }
-
-        recursiveInsert(rootNode.get(word.charAt(0)), word.substring(1));
-    }
-
-    private static void recursiveInsert(TrieNode root, String word) {
-        final TrieNode next;
-        if(root.children.containsKey(word.charAt(0))) {
-            next = root.children.get(word.charAt(0));
-        }else {
-            next = new TrieNode();
-            root.children.put(word.charAt(0), next);
-        }
-
-        if(word.length() == 1) {
-            next.endOfWord = true;
-            return;
-        }else {
-            recursiveInsert(next, word.substring(1));
         }
     }
 }
